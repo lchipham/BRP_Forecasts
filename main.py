@@ -14,15 +14,17 @@ import matplotlib.pyplot as plt
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     option_list = ["Bond Price", "Bond Yield-To-Maturity", "Bond Duration", "Bond Convexity", "Forward Rates", "Bootstrap Yield Curve"]
-
     while True:
         print("Select one of the following options:\n")
         for i in range(len(option_list)):
             print(str(option_list.index(option_list[i]) + 1) + ") ", option_list[i])
         try:
-            user_input = int(input("Enter option number: "))
+            user_option = int(input("Enter option number (or 0 to exit): "))
+            if user_option == 0:
+                print("Thank you for using our program!")
+                break
         except ValueError:
-            print("Sorry, that was not a valid number. Please try again!")
+            print("Invalid number. Please try again!")
             print("\n")
             continue
         print("---------------------", option_list[user_input - 1], "---------------------")
@@ -52,9 +54,9 @@ if __name__ == '__main__':
             fr = ForwardRates()
             # Parameters
             spot_list = {0.25: 10.127, 0.50: 10.469, 1.00: 10.536, 1.50: 10.681, 2.00: 10.808}
-            for t in spot_list.keys():
-                fr.add_spot_rate(t, spot_list.values())
-            fwd_list = [0] + fr.get_forward_rates() #fisrt sp
+            for key, value in spot_list.items():
+                fr.add_spot_rate(key, value)
+            fwd_list = [0] + fr.get_forward_rates()
             df2 = pd.DataFrame({'Maturity': fr.spot_rates.keys(), 'Spot Rates': fr.spot_rates.values(), 'Forward Rates': fwd_list})
             print(df2)
 
@@ -104,5 +106,4 @@ if __name__ == '__main__':
         else:
             print("Please choose from one of the specified options.")
 
-    print("Thank you for using our program!")
 
